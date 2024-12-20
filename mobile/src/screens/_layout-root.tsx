@@ -2,12 +2,11 @@ import * as React from "react";
 import { registerRootComponent } from "expo";
 import { createStaticNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Text } from "react-native";
+import _layoutTab from "./tabs/_layout-tab";
 
 const RootStack = createNativeStackNavigator({
-  screens: {
-    home: () => <Text>asd</Text>,
-  },
+  screenOptions: { headerShown: false },
+  screens: { tabs: _layoutTab },
 });
 
 const Navigation = createStaticNavigation(RootStack);
