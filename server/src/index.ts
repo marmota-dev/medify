@@ -1,8 +1,10 @@
 import fastify from 'fastify';
+import dotenv from 'dotenv';
 
+dotenv.config()
 const app = fastify();
 
-const port = 3333;
+const port: any = process.env.PORT || 8080;
 
 app.get('/', () => {
     return 'Hello World!'
