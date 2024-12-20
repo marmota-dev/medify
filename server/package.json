@@ -4,7 +4,7 @@
   "description": "Este projeto será desenvolvido em Node.js utilizando Fastify.",
   "main": "index.js",
   "scripts": {
-    "dev": "tsx watch src/http/server.ts"
+    "dev": "tsx watch --env-file .env src/http/server.ts"
   },
   "keywords": [],
   "author": "",
@@ -15,6 +15,7 @@
     "typescript": "^5.7.2"
   },
   "dependencies": {
-    "fastify": "^5.2.0"
+    "fastify": "^5.2.0",
+    "zod": "^3.24.1"
   }
 }
