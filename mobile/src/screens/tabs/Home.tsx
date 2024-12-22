@@ -1,5 +1,5 @@
-import HelloWord from "../../components/HelloWord";
+import HelloWord from '../../components/HelloWord'
 
 export default function Home() {
-  return <HelloWord message="hello word 1" />;
+  return <HelloWord message="hello word 1" />
 }
