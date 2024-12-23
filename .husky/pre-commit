@@ -1,0 +1,29 @@
+#!/bin/sh
+
+# Cores
+NC='\033[0m' # No Color
+Blue='\033[1;34m'
+Red='\033[1;31m'
+Green='\033[1;32m'
+
+CHANGED_FILES=$(git diff --cached --name-only)
+
+if echo "$CHANGED_FILES" | grep -q "^mobile/"; then
+  echo "${Green}Rodando checagens do projeto 'mobile':${NC}"
+  cd mobile
+
+  npm run lint
+fi
+
+if echo "$CHANGED_FILES" | grep -q "^server/"; then
+  echo "${Green}Rodando checagens do projeto 'server':${NC}"
+
+  # Verifica se está na pasta mobile
+  if [ "$(basename "$(pwd)")" = "mobile" ]; then
+    cd ../server
+  else
+    cd server
+  fi
+
+  npm run lint
+fi
