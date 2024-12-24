@@ -1,12 +1,9 @@
-import fastify from 'fastify'
+import { buildServer } from './build-server'
 import { env } from '../env'
-import { routes } from '../routes/routes'
 
-const app = fastify()
+const server = buildServer()
 
-routes(app)
-
-app
+server
   .listen({ port: env.PORT })
   .then(() => {
     console.log('HTTP server running successfully!')
