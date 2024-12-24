@@ -1,6 +1,6 @@
 import type { FastifyInstance } from 'fastify'
 
-export const routes = (server: FastifyInstance) => {
+export async function routes(server: FastifyInstance) {
   server.get('/', async (request, reply) => {
     return { message: 'Hello World!' }
   })
