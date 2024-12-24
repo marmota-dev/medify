@@ -13,6 +13,7 @@ if echo "$CHANGED_FILES" | grep -q "^mobile/"; then
   cd mobile
 
   npm run lint
+  npm run test
 fi
 
 if echo "$CHANGED_FILES" | grep -q "^server/"; then
