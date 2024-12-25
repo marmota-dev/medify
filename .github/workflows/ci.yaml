@@ -1,0 +1,59 @@
+name: CI Pipeline
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  backend-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. Checkout code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # 2. Configura o Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22
+      
+      # 3. Instala dependências
+      - name: Install dependencies
+        run: cd server && npm install
+
+      # 4. Roda o linter
+      - name: Run backend linter
+        run: cd server && npm run lint
+
+      # 5. Roda os testes
+      - name: Run backend tests
+        run: cd server && npm run test
+
+  frontend-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checa o código do repositório
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # 2. Configura o Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22
+
+      # 3. Instala dependências
+      - name: Install dependencies
+        run: cd mobile && npm install
+
+      # 4. Roda o linter
+      - name: Run frontend linter
+        run: cd mobile && npm run lint
+
+      # 5. Roda os testes
+      - name: Run frontend tests
+        run: cd mobile && npm run test
