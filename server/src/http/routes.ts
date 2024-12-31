@@ -2,7 +2,7 @@ import type { FastifyInstance } from 'fastify'
 import * as jwt from 'jsonwebtoken'
 import type { ZodTypeProvider } from 'fastify-type-provider-zod'
 import { userSchema } from './schemas/userSchema'
-import { prisma } from './server'
+import { prisma } from '../database/prisma'
 import { compareSync } from 'bcrypt'
 
 import { env } from '../env'
