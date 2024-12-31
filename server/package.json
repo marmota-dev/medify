@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "tsx watch --env-file .env src/http/server.ts",
     "lint": "npx @biomejs/biome format --write ./src && npx @biomejs/biome lint",
-    "test": "jest"
+    "test": "jest --runInBand",
+    "test:integration": "NODE_ENV=integration jest --runInBand --testPathPattern=src/tests/integration"
   },
   "keywords": [],
   "author": "",
