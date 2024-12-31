@@ -55,7 +55,9 @@ export async function routes(server: FastifyInstance) {
 
       const token = jwt.sign({
         userId: user.id,
-      }, env.JWT_SECRET_KEY)
+      }, env.JWT_SECRET_KEY, {
+        expiresIn: '21d'
+      })
 
       reply.send({ message: { user, token } })
     }
