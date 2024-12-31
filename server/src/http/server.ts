@@ -4,10 +4,6 @@ import { PrismaClient } from '@prisma/client'
 
 const server = buildServer()
 
-export const prisma = new PrismaClient({
-  log: ['query']
-})
-
 server
   .listen({ port: env.PORT })
   .then(() => {
