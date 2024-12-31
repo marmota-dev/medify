@@ -30,7 +30,7 @@ jobs:
 
       # 5. Roda os testes
       - name: Run backend tests
-        run: cd server && npm run test
+        run: cd server && npm run test && npm run test:integration
 
   frontend-tests:
     runs-on: ubuntu-latest
