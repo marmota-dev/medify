@@ -1,6 +1,5 @@
 import { buildServer } from './build-server'
 import { env } from '../env'
-import { PrismaClient } from '@prisma/client'
 
 const server = buildServer()
 
