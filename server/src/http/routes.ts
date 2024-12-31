@@ -5,6 +5,8 @@ import { userSchema } from './schemas/userSchema'
 import { prisma } from './server'
 import { compareSync } from 'bcrypt'
 
+import { env } from '../env'
+
 export async function routes(server: FastifyInstance) {
   server.get('/', async (request, reply) => {
     return { message: 'Hello World!' }
@@ -41,7 +43,7 @@ export async function routes(server: FastifyInstance) {
         return reply.status(400).send({ error: 'O mínimo de caracteres da senha é 8' })
       }
 
-      let user = await prisma.user.findFirst({ where: {email} })
+      let user = await prisma.user.findFirst({ where: { email } })
 
       if (!user) {
         return reply.status(401).send({ error: 'O usuário não existe' })
@@ -53,7 +55,7 @@ export async function routes(server: FastifyInstance) {
 
       const token = jwt.sign({
         userId: user.id,
-      }, "")
+      }, env.JWT_SECRET_KEY)
 
       reply.send({ message: { user, token } })
     }
