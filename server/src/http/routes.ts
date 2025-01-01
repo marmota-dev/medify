@@ -57,7 +57,14 @@ export async function routes(server: FastifyInstance) {
         userId: user.id,
       }, env.JWT_SECRET_KEY)
 
-      reply.send({ message: { user, token } })
+      const { password:_, ...userLogin } = user
+
+      return reply.send({
+        message: {
+          user: userLogin,
+          token: token
+        }
+      })
     }
   )
 
