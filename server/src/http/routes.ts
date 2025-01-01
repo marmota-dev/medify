@@ -3,7 +3,7 @@ import * as jwt from 'jsonwebtoken'
 import type { ZodTypeProvider } from 'fastify-type-provider-zod'
 import { userSchema } from './schemas/userSchema'
 import { prisma } from '../database/prisma'
-import { compareSync } from 'bcrypt'
+import { compare } from 'bcrypt'
 
 import { env } from '../env'
 
@@ -49,7 +49,7 @@ export async function routes(server: FastifyInstance) {
         return reply.status(401).send({ error: 'O usuário não existe' })
       }
 
-      if (!compareSync(password, user.password)) {
+      if (!compare(password, user.password)) {
         return reply.status(401).send({ error: 'Senha incorreta' })
       }
 
