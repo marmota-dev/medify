@@ -15,7 +15,7 @@ export async function routes(server: FastifyInstance) {
   server
     .withTypeProvider<ZodTypeProvider>()
     .post(
-      'api/login',
+      '/api/login',
       { schema: { body: userSchema } },
       async (request, reply) => {
         const { email, password } = request.body
@@ -80,11 +80,11 @@ export async function routes(server: FastifyInstance) {
       }
     )
 
-  server.post('api/pharmacy/add', async (request, reply) => {
+  server.post('/api/pharmacy/add', async (request, reply) => {
     reply.status(201).send({ message: 'Pharmacy added successfully' })
   })
 
-  server.delete('api/pharmacy/delete', async (request, reply) => {
+  server.delete('/api/pharmacy/delete', async (request, reply) => {
     reply.status(200).send({ message: 'Pharmacy deleted successfully!' })
   })
 }
