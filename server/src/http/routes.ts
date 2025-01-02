@@ -44,7 +44,7 @@ export async function routes(server: FastifyInstance) {
 
         if (password.length > 255 || password.length < 8) {
           errors.push({
-            error: 'O mínimo de caracteres da senha é 255 e o limite é 255',
+            error: 'O mínimo de caracteres da senha é 8 e o limite é 255',
           })
         }
 
