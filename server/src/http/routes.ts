@@ -20,38 +20,6 @@ export async function routes(server: FastifyInstance) {
       async (request, reply) => {
         const { email, password } = request.body
 
-        const errors: object[] = []
-
-        if (email === '') {
-          errors.push({ error: 'O e-mail é obrigatório' })
-        }
-
-        if (password === '') {
-          errors.push({ error: 'A senha é obrigatória' })
-        }
-
-        if (typeof email !== 'string') {
-          errors.push({ error: 'O e-mail deve ser um texto' })
-        }
-
-        if (typeof password !== 'string') {
-          errors.push({ error: 'A senha deve ser um texto' })
-        }
-
-        if (email.length > 255) {
-          errors.push({ error: 'O limite de caracteres do e-mail é 255' })
-        }
-
-        if (password.length > 255 || password.length < 8) {
-          errors.push({
-            error: 'O mínimo de caracteres da senha é 8 e o limite é 255',
-          })
-        }
-
-        if (errors.length >= 1) {
-          return reply.status(400).send({ errors: JSON.stringify(errors) })
-        }
-
         const user = await prisma.user.findFirst({ where: { email } })
 
         if (!user) {
