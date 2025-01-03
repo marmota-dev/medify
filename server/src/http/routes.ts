@@ -1,7 +1,7 @@
 import type { FastifyInstance } from 'fastify'
 import * as jwt from 'jsonwebtoken'
 import type { ZodTypeProvider } from 'fastify-type-provider-zod'
-import { userSchema } from './schemas/userSchema'
+import { loginSchema } from './schemas/authSchema'
 import { prisma } from '../database/prisma'
 import { compare } from 'bcrypt'
 
@@ -16,7 +16,7 @@ export async function routes(server: FastifyInstance) {
     .withTypeProvider<ZodTypeProvider>()
     .post(
       '/api/login',
-      { schema: { body: userSchema } },
+      { schema: { body: loginSchema } },
       async (request, reply) => {
         const { email, password } = request.body
 
@@ -27,18 +27,21 @@ export async function routes(server: FastifyInstance) {
         }
 
         if (!compare(password, user.password)) {
-          return reply.status(401).send({ error: "As senhas não são iguais" })
+          return reply.status(401).send({ error: 'As senhas não são iguais' })
         }
 
-        const token = jwt.sign({
-          userId: user.id
-        }, env.JWT_SECRET_KEY)
+        const token = jwt.sign(
+          {
+            userId: user.id,
+          },
+          env.JWT_SECRET_KEY
+        )
 
-        const { password:_, ...userLogin } = user
+        const { password: _, ...userLogin } = user
 
         return reply.status(200).send({
           token: token,
-          user: userLogin
+          user: userLogin,
         })
       }
     )
