@@ -4,6 +4,7 @@ on:
   pull_request:
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
   backend-tests:
@@ -24,11 +25,21 @@ jobs:
       - name: Install dependencies
         run: cd server && npm install
 
-      # 4. Roda o linter
+      # 4. Configura o banco de dados
+      - name: Setup database
+        run: cd server && docker-compose up -d
+
+      # 5. Roda as migrations
+      - name: Run migrations
+        run: cd server && npx prisma migrate deploy
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/medify?schema=public
+
+      # 6. Roda o linter
       - name: Run backend linter
         run: cd server && npm run lint
 
-      # 5. Roda os testes
+      # 7. Roda os testes
       - name: Run backend tests
         run: cd server && npm run test && npm run test:integration
 
