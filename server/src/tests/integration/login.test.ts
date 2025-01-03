@@ -1,6 +1,6 @@
 import { describe, expect, it, jest } from '@jest/globals'
-import { buildServer } from '../../http/build-server'
 import { prisma } from '../../database/prisma'
+import { buildServer } from '../../http/build-server'
 
 jest.mock('bcrypt', () => ({
   compare: (data: string, encripted: string) => data === encripted,

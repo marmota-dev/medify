@@ -1,12 +1,12 @@
-import type { FastifyInstance } from 'fastify'
-import * as jwt from 'jsonwebtoken'
-import type { ZodTypeProvider } from 'fastify-type-provider-zod'
-import { loginSchema } from './schemas/authSchema'
-import { prisma } from '../database/prisma'
 import { compare } from 'bcrypt'
+import type { FastifyInstance } from 'fastify'
+import type { ZodTypeProvider } from 'fastify-type-provider-zod'
+import * as jwt from 'jsonwebtoken'
+import { prisma } from '../database/prisma'
+import { loginSchema } from './schemas/authSchema'
 
-import { env } from '../env'
 import z from 'zod'
+import { env } from '../env'
 
 export async function routes(server: FastifyInstance) {
   server.get('/', async (request, reply) => {
