@@ -31,8 +31,15 @@ export async function routes(server: FastifyInstance) {
               email: z.string(),
             }),
           }),
-          401: z.object({
+          400: z.object({
+            statusCode: z.number(),
             error: z.string(),
+            message: z.string(),
+          }),
+          401: z.object({
+            statusCode: z.number(),
+            error: z.string(),
+            message: z.string(),
           }),
         },
       },
@@ -43,7 +50,11 @@ export async function routes(server: FastifyInstance) {
       const user = await prisma.user.findFirst({ where: { email } })
 
       if (!user || !compare(password, user.password)) {
-        return reply.status(401).send({ error: 'Credenciais inválidas' })
+        return reply.status(401).send({
+          statusCode: 401,
+          error: 'Unauthorized',
+          message: 'Credenciais inválidas',
+        })
       }
 
       const token = jwt.sign({ userId: user.id }, env.JWT_SECRET_KEY, {
