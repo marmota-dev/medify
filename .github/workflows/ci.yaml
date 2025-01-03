@@ -4,33 +4,55 @@ on:
   pull_request:
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
   backend-tests:
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: medify
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
-    # 1. Checkout code
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # 2. Configura o Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 22
       
-      # 3. Instala dependências
       - name: Install dependencies
         run: cd server && npm install
 
-      # 4. Roda o linter
+      - name: Run migrations
+        run: cd server && npx prisma migrate dev
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/medify?schema=public
+          PORT: 3333
+          JWT_SECRET_KEY: testkey123
+
       - name: Run backend linter
         run: cd server && npm run lint
 
-      # 5. Roda os testes
       - name: Run backend tests
         run: cd server && npm run test && npm run test:integration
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/medify?schema=public
+          PORT: 3333
+          JWT_SECRET_KEY: testkey123
 
   frontend-tests:
     runs-on: ubuntu-latest
