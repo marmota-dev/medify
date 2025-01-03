@@ -93,7 +93,7 @@ export async function routes(server: FastifyInstance) {
           }
         })
 
-        const {password:_, ...userRegister} = newUser
+        const { password:_, id:x, ...userRegister } = newUser
 
         return reply.send({
           message: {
