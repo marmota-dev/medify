@@ -18,7 +18,7 @@ export async function routes(server: FastifyInstance) {
         const { email, password, name, confirm_password } = request.body
 
         if (password !== confirm_password) {
-          return reply.status(409).send({ error: "As senhas não são iguais"})
+          return reply.status(400).send({ error: "As senhas não são iguais"})
         }
 
         const user = await prisma.user.findFirst({ where: { email } })
