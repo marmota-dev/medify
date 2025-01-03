@@ -38,13 +38,13 @@ describe('Login route', () => {
     const body = JSON.parse(response.body)
 
     expect(body).toEqual({
-      token: 'valid.token.here',
+      access_token: 'valid.token.here',
+      token_type: 'Bearer',
+      expires_in: 3600,
       user: {
         id: 1,
         name: 'John Doe',
         email: 'john.doe@example.com',
-        created_at: user.created_at.toISOString(),
-        updated_at: user.updated_at.toISOString(),
       },
     })
   })
