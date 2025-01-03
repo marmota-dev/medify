@@ -1,6 +1,6 @@
 import type { FastifyInstance } from 'fastify'
 import type { ZodTypeProvider } from 'fastify-type-provider-zod'
-import { userSchema } from './schemas/userSchema'
+import { registerSchema } from './schemas/authSchema'
 import { prisma } from '../database/prisma'
 import { hash } from 'bcrypt'
 
@@ -13,7 +13,7 @@ export async function routes(server: FastifyInstance) {
     .withTypeProvider<ZodTypeProvider>()
     .post(
       '/api/register',
-      { schema: { body: userSchema } },
+      { schema: { body: registerSchema } },
       async (request, reply) => {
         const { email, password, name, confirm_password } = request.body
 
