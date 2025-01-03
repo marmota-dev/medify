@@ -15,7 +15,7 @@ export async function routes(server: FastifyInstance) {
   server
     .withTypeProvider<ZodTypeProvider>()
     .post(
-      '/api/register',
+      '/api/login',
       { schema: { body: userSchema } },
       async (request, reply) => {
         const { email, password } = request.body
