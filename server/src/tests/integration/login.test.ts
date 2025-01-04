@@ -144,8 +144,10 @@ describe('Login route', () => {
   ])(
     'should return 400 when the payload is invalid - Zod tag: $zodTag',
     async ({ email, password, message }) => {
+      // Arrange
       jest.spyOn(prisma.user, 'findFirst').mockResolvedValue(mockUser)
 
+      // Act
       const response = await server.inject({
         method: 'POST',
         url: '/api/login',
@@ -155,6 +157,7 @@ describe('Login route', () => {
         },
       })
 
+      // Assert
       expect(response.statusCode).toBe(400)
       const body = JSON.parse(response.body)
 
