@@ -3,8 +3,10 @@ import type { FastifyInstance } from 'fastify'
 import type { ZodTypeProvider } from 'fastify-type-provider-zod'
 import * as jwt from 'jsonwebtoken'
 import { prisma } from '../database/prisma'
+import { registerSchema } from './schemas/authSchema'
 import { loginSchema } from './schemas/authSchema'
 
+import { hash } from 'bcrypt'
 import z from 'zod'
 import { env } from '../env'
 
@@ -62,6 +64,72 @@ export async function routes(server: FastifyInstance) {
       })
 
       return reply.status(200).send({
+        access_token: token,
+        token_type: 'Bearer',
+        expires_in: 3600,
+        user: {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+        },
+      })
+    }
+  )
+
+  server.withTypeProvider<ZodTypeProvider>().post(
+    '/api/register',
+    {
+      schema: {
+        tags: ['auth'],
+        summary: 'This route is responsible for registering a new user',
+        body: registerSchema,
+        response: {
+          201: z.object({
+            access_token: z.string(),
+            token_type: z.literal('Bearer'),
+            expires_in: z.number(),
+            user: z.object({
+              id: z.number(),
+              name: z.string(),
+              email: z.string(),
+            }),
+          }),
+          400: z.object({
+            statusCode: z.number(),
+            error: z.string(),
+            message: z.string(),
+          }),
+        },
+      },
+    },
+    async (request, reply) => {
+      const { email, password, name } = request.body
+
+      const existingUser = await prisma.user.findFirst({ where: { email } })
+
+      if (existingUser) {
+        return reply.status(400).send({
+          statusCode: 400,
+          error: 'Bad Request',
+          message: 'E-mail já cadastrado',
+        })
+      }
+
+      const hashedPassword = await hash(password, 10)
+
+      const user = await prisma.user.create({
+        data: {
+          name,
+          email,
+          password: hashedPassword,
+        },
+      })
+
+      const token = jwt.sign({ userId: user.id }, env.JWT_SECRET_KEY, {
+        expiresIn: '1h',
+      })
+
+      return reply.status(201).send({
         access_token: token,
         token_type: 'Bearer',
         expires_in: 3600,
