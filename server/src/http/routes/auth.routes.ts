@@ -8,29 +8,21 @@ import { registerRouteSchema } from '../schemas/RegisterRouteSchema'
 export async function authRoutes(server: FastifyInstance) {
   server
     .withTypeProvider<ZodTypeProvider>()
-    .post(
-      '/api/login',
-      { schema: loginRouteSchema },
-      async (request, reply) => {
-        const { email, password } = request.body
+    .post('/api/login', loginRouteSchema, async (request, reply) => {
+      const { email, password } = request.body
 
-        const response = await login(email, password)
+      const response = await login(email, password)
 
-        return reply.status(200).send(response)
-      }
-    )
+      return reply.status(200).send(response)
+    })
 
   server
     .withTypeProvider<ZodTypeProvider>()
-    .post(
-      '/api/register',
-      { schema: registerRouteSchema },
-      async (request, reply) => {
-        const { name, email, password } = request.body
+    .post('/api/register', registerRouteSchema, async (request, reply) => {
+      const { name, email, password } = request.body
 
-        const response = await register(name, email, password)
+      const response = await register(name, email, password)
 
-        return reply.status(201).send(response)
-      }
-    )
+      return reply.status(201).send(response)
+    })
 }
