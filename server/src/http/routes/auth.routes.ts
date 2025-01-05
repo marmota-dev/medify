@@ -1,9 +1,7 @@
-import { compare, hash } from 'bcrypt'
 import type { FastifyInstance } from 'fastify'
 import type { ZodTypeProvider } from 'fastify-type-provider-zod'
-import { sign } from 'jsonwebtoken'
-import { prisma } from '../../database/prisma'
-import { env } from '../../env'
+import login from '../../application/usecase/Login'
+import register from '../../application/usecase/Register'
 import { loginRouteSchema } from '../schemas/LoginRouteSchema'
 import { registerRouteSchema } from '../schemas/RegisterRouteSchema'
 
@@ -16,30 +14,17 @@ export async function authRoutes(server: FastifyInstance) {
       async (request, reply) => {
         const { email, password } = request.body
 
-        const user = await prisma.user.findFirst({ where: { email } })
+        try {
+          const loginResponse = await login(email, password)
 
-        if (!user || !compare(password, user.password)) {
+          return reply.status(200).send(loginResponse)
+        } catch (error) {
           return reply.status(401).send({
             statusCode: 401,
             error: 'Unauthorized',
             message: 'Credenciais inválidas',
           })
         }
-
-        const token = sign({ userId: user.id }, env.JWT_SECRET_KEY, {
-          expiresIn: '1h',
-        })
-
-        return reply.status(200).send({
-          access_token: token,
-          token_type: 'Bearer',
-          expires_in: 3600,
-          user: {
-            id: user.id,
-            name: user.name,
-            email: user.email,
-          },
-        })
       }
     )
 
@@ -49,42 +34,19 @@ export async function authRoutes(server: FastifyInstance) {
       '/api/register',
       { schema: registerRouteSchema },
       async (request, reply) => {
-        const { email, password, name } = request.body
+        const { name, email, password } = request.body
 
-        const existingUser = await prisma.user.findFirst({ where: { email } })
+        try {
+          const registerResponse = await register(name, email, password)
 
-        if (existingUser) {
+          return reply.status(201).send(registerResponse)
+        } catch (error) {
           return reply.status(400).send({
             statusCode: 400,
             error: 'Bad Request',
             message: 'E-mail já cadastrado',
           })
         }
-
-        const hashedPassword = await hash(password, 10)
-
-        const user = await prisma.user.create({
-          data: {
-            name,
-            email,
-            password: hashedPassword,
-          },
-        })
-
-        const token = sign({ userId: user.id }, env.JWT_SECRET_KEY, {
-          expiresIn: '1h',
-        })
-
-        return reply.status(201).send({
-          access_token: token,
-          token_type: 'Bearer',
-          expires_in: 3600,
-          user: {
-            id: user.id,
-            name: user.name,
-            email: user.email,
-          },
-        })
       }
     )
 }
