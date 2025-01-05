@@ -2,6 +2,7 @@ import { hash } from 'bcrypt'
 import { sign } from 'jsonwebtoken'
 import { prisma } from '../../database/prisma'
 import { env } from '../../env'
+import { BadRequest } from '../../http/errors/BadRequest'
 
 type RegisterResponse = {
   access_token: string
@@ -22,7 +23,7 @@ export default async function register(
   const existingUser = await prisma.user.findFirst({ where: { email } })
 
   if (existingUser) {
-    throw new Error('Email já cadastrado')
+    throw new BadRequest('E-mail já cadastrado')
   }
 
   const hashedPassword = await hash(password, 10)

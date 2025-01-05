@@ -8,7 +8,8 @@ import {
   serializerCompiler,
   validatorCompiler,
 } from 'fastify-type-provider-zod'
-import { routes } from './routes'
+import { errorHandler } from './error-handler'
+import { routes } from './routes/routes'
 
 export function buildServer(): FastifyInstance {
   const server = fastify().withTypeProvider<ZodTypeProvider>()
@@ -33,6 +34,8 @@ export function buildServer(): FastifyInstance {
   server.register(fastifySwaggerUi, {
     routePrefix: '/docs',
   })
+
+  server.setErrorHandler(errorHandler)
 
   server.register(routes)
 

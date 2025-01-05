@@ -14,17 +14,9 @@ export async function authRoutes(server: FastifyInstance) {
       async (request, reply) => {
         const { email, password } = request.body
 
-        try {
-          const loginResponse = await login(email, password)
+        const response = await login(email, password)
 
-          return reply.status(200).send(loginResponse)
-        } catch (error) {
-          return reply.status(401).send({
-            statusCode: 401,
-            error: 'Unauthorized',
-            message: 'Credenciais inválidas',
-          })
-        }
+        return reply.status(200).send(response)
       }
     )
 
@@ -36,17 +28,9 @@ export async function authRoutes(server: FastifyInstance) {
       async (request, reply) => {
         const { name, email, password } = request.body
 
-        try {
-          const registerResponse = await register(name, email, password)
+        const response = await register(name, email, password)
 
-          return reply.status(201).send(registerResponse)
-        } catch (error) {
-          return reply.status(400).send({
-            statusCode: 400,
-            error: 'Bad Request',
-            message: 'E-mail já cadastrado',
-          })
-        }
+        return reply.status(201).send(response)
       }
     )
 }

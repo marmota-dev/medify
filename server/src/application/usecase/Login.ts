@@ -2,6 +2,7 @@ import { compare } from 'bcrypt'
 import { sign } from 'jsonwebtoken'
 import { prisma } from '../../database/prisma'
 import { env } from '../../env'
+import { Unauthorized } from '../../http/errors/Unauthorized'
 
 type LoginResponse = {
   access_token: string
@@ -21,7 +22,7 @@ export default async function login(
   const user = await prisma.user.findFirst({ where: { email } })
 
   if (!user || !compare(password, user.password)) {
-    throw new Error('Credenciais inválidas')
+    throw new Unauthorized('Credenciais inválidas')
   }
 
   const token = sign({ userId: user.id }, env.JWT_SECRET_KEY, {
