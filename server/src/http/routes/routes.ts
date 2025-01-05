@@ -1,6 +1,6 @@
 import type { FastifyInstance } from 'fastify'
-import { authRoutes } from './routes/auth.routes'
-import { pharmacyRoutes } from './routes/pharmacy.routes'
+import { authRoutes } from './auth.routes'
+import { pharmacyRoutes } from './pharmacy.routes'
 
 export async function routes(server: FastifyInstance) {
   server.get('/', async (request, reply) => {
