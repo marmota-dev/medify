@@ -1,5 +1,5 @@
 import { it } from '@jest/globals'
-import { prisma } from '../../database/prisma'
+import { prisma } from '../../infra/database/prisma'
 import { conditionalDescribe } from '../helpers/testHelpers'
 
 const isIntegration = process.env.NODE_ENV === 'integration'

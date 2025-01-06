@@ -1,6 +1,6 @@
 import { describe, expect, it, jest } from '@jest/globals'
-import { prisma } from '../../database/prisma'
-import { buildServer } from '../../http/build-server'
+import { prisma } from '../../infra/database/prisma'
+import { buildServer } from '../../infra/http/build-server'
 
 jest.mock('bcrypt', () => ({
   hash: () => 'password-hashed',

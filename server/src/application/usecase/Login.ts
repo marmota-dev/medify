@@ -1,8 +1,8 @@
 import { compare } from 'bcrypt'
 import { sign } from 'jsonwebtoken'
-import { prisma } from '../../database/prisma'
-import { env } from '../../env'
-import { Unauthorized } from '../../http/errors/Unauthorized'
+import { prisma } from '../../infra/database/prisma'
+import { env } from '../../infra/env'
+import { Unauthorized } from '../../infra/http/errors/Unauthorized'
 
 type LoginResponse = {
   access_token: string

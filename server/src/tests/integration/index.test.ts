@@ -1,5 +1,5 @@
 import { describe, expect, it } from '@jest/globals'
-import { buildServer } from '../../http/build-server'
+import { buildServer } from '../../infra/http/build-server'
 
 describe('Hello World!', () => {
   const server = buildServer()

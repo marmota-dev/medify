@@ -1,8 +1,8 @@
 import { hash } from 'bcrypt'
 import { sign } from 'jsonwebtoken'
-import { prisma } from '../../database/prisma'
-import { env } from '../../env'
-import { BadRequest } from '../../http/errors/BadRequest'
+import { prisma } from '../../infra/database/prisma'
+import { env } from '../../infra/env'
+import { BadRequest } from '../../infra/http/errors/BadRequest'
 
 type RegisterResponse = {
   access_token: string
