@@ -2,8 +2,8 @@ import type { FastifyInstance } from 'fastify'
 import type { ZodTypeProvider } from 'fastify-type-provider-zod'
 import login from '../../../application/usecase/Login'
 import register from '../../../application/usecase/Register'
-import { loginRouteSchema } from '../schemas/LoginRouteSchema'
-import { registerRouteSchema } from '../schemas/RegisterRouteSchema'
+import { loginRouteSchema } from '../schemas/LoginRoute'
+import { registerRouteSchema } from '../schemas/RegisterRoute'
 
 export async function authRoutes(server: FastifyInstance) {
   server

@@ -1,13 +1,13 @@
 import z from 'zod'
-import { loginSchema } from './authSchema'
+import { registerSchema } from './auth'
 
-export const loginRouteSchema = {
+export const registerRouteSchema = {
   schema: {
     tags: ['auth'],
-    summary: 'This route is responsible for authenticating the user',
-    body: loginSchema,
+    summary: 'This route is responsible for registering a new user',
+    body: registerSchema,
     response: {
-      200: z.object({
+      201: z.object({
         access_token: z.string(),
         token_type: z.literal('Bearer'),
         expires_in: z.number(),
@@ -18,11 +18,6 @@ export const loginRouteSchema = {
         }),
       }),
       400: z.object({
-        statusCode: z.number(),
-        error: z.string(),
-        message: z.string(),
-      }),
-      401: z.object({
         statusCode: z.number(),
         error: z.string(),
         message: z.string(),
