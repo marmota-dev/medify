@@ -7,7 +7,7 @@ type FastifyErrorHandler = FastifyInstance['errorHandler']
 export const errorHandler: FastifyErrorHandler = (error, request, reply) => {
   if (error instanceof BadRequest || error instanceof Unauthorized) {
     return reply.status(error.statusCode).send({
-      error: error.name,
+      error: error.title,
       message: error.message,
       statusCode: error.statusCode,
     })
