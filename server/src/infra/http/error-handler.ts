@@ -4,14 +4,14 @@ import { Unauthorized } from './errors/Unauthorized'
 
 type FastifyErrorHandler = FastifyInstance['errorHandler']
 
-export const errorHandler: FastifyErrorHandler = (error, request, reply) => {
-  if (error instanceof BadRequest || error instanceof Unauthorized) {
-    return reply.status(error.statusCode).send({
-      error: error.name,
-      message: error.message,
-      statusCode: error.statusCode,
+export const errorHandler: FastifyErrorHandler = (e, request, reply) => {
+  if (e instanceof BadRequest || e instanceof Unauthorized) {
+    return reply.status(e.statusCode).send({
+      error: e.error,
+      message: e.message,
+      statusCode: e.statusCode,
     })
   }
 
-  reply.send(error)
+  reply.send(e)
 }

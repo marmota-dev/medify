@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "tsx watch --env-file .env src/infra/http/server.ts",
     "lint": "npx @biomejs/biome format --write ./src && npx @biomejs/biome lint",
+    "check": "npx @biomejs/biome check --write --unsafe",
     "test": "jest --runInBand",
     "test:integration": "NODE_ENV=integration jest --runInBand --testPathPattern=src/tests/integration"
   },

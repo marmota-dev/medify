@@ -1,10 +1,11 @@
-export class BadRequest extends Error {
-  public statusCode: number
-  public name: string
+import type { BadRequestResponse } from '../docs/responses/error/badRequestResponse'
+
+export class BadRequest extends Error implements BadRequestResponse {
+  readonly statusCode = 400
+  readonly error = 'Bad Request'
 
   constructor(message: string) {
     super(message)
-    this.statusCode = 400
-    this.name = 'Bad Request'
+    this.name = this.constructor.name
   }
 }
